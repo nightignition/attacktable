@@ -64,6 +64,18 @@ $(document).ready(function()
 		total = total - miss - dodgeFinal - glance;
 		var critFinal = parseFloat(getCritFinal());
 		var hitFinal = round(total - critFinal);
+		var critOverCap = 0;
+		total = round(total);
+		if(hitFinal < 0)
+		{
+			hitFinal = 0;
+		}
+		if(parseFloat(critFinal) > parseFloat(total))
+		{
+			critOverCap = round(critFinal - total);
+			critFinal = total + '(' + critOverCap + '% crit is over the cap)';
+		}
+		
 		// $('.crit_cap').text(hitFinal);
 		var result = 
 			'<div>Miss: '+ miss +'</div>'+
@@ -107,12 +119,13 @@ $(document).ready(function()
 		// buffs that increase you crit chance like Songflower Serenade or Leader of the Pack, and
 		// consumables such as Elixir of the Mongoose. It does not include crit gained indirectly through
 		// Agility, neither base Agility or Agility from gear.
-		var critOverCap = 0;
-		if(critTemp > total)
-		{
-			critOverCap = critTemp - total;
-			critTemp = total + '(' + critOverCap + '% crit is over the cap)';
-		}
+		// var critOverCap = 0;
+		
+		// if(parseFloat(critTemp) > parseFloat(total))
+		// {
+		// 	critOverCap = critTemp - total;
+		// 	critTemp = total + '(' + critOverCap + '% crit is over the cap)';
+		// }
 		return critTemp;
 	}
 
