@@ -36,7 +36,14 @@
 
 @media only screen and (max-width: 1440px)
 {
-	
+	.stat_num
+	{
+		font-size: 86px;
+	}
+	.master_title h1
+	{
+		font-size: 64px;
+	}
 }
 
 /************
@@ -90,7 +97,23 @@
 
 @media only screen and (max-width: 991px)
 {
-	
+	.stat_num
+	{
+		font-size: 72px;
+	}
+	.button
+	{
+		width: 202px;
+		height: 63px;
+	}
+	.button span
+	{
+		font-size: 14px;
+	}
+	.master_title h1
+	{
+		font-size: 56px;
+	}
 }
 
 /************
@@ -126,7 +149,42 @@
 
 @media only screen and (max-width: 767px)
 {
-	
+	h3
+	{
+		font-size: 18px;
+	}
+	.master_title h1
+	{
+		font-size: 36px;
+	}
+	.stat
+	{
+		width: 100%;
+	}
+	.subtitle
+	{
+		height: 58px;
+		font-size: 16px;
+	}
+	.title 
+	{
+		height: 80px;
+	}
+	.title > div > div:first-of-type
+	{
+		font-family: 'Michroma', sans-serif;
+		font-size: 24px;
+		color: #222;
+		margin-bottom: 9px;
+		margin-right: 10px;
+	}
+	.title > div > div:last-of-type
+	{
+		font-family: 'dwm', sans-serif;
+		font-size: 24px;
+		color: #222;
+		text-transform: uppercase;
+	}
 }
 
 /************

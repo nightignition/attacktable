@@ -36,17 +36,21 @@ $(document).ready(function()
 	block = 5,
 	total = 100,
 	hit = 100,
-	btn = $('.btn'),
-	table = $('.table');
-	btn.on('click', calculate);	
+	btn = $('.button'),
+	table = $('.results');
+	btn.on('click', calculate);
+
+	initStatControl();
+	initCheckboxes();
+	calculate();
 
 	function calculate()
 	{
 		resetDefaults();
 		targetDefense = targetLevel * 5; //315 for level 63 mobs
-		hitChance = $('#input_hit').val();
-		crit = parseInt($('#input_crit').val());
-		if($('#dw').prop("checked"))
+		hitChance = $('#input_hit').text();
+		crit = parseInt($('#input_crit').text());
+		if($('.check_2').hasClass("checked"))
 		{
 			dw = true;
 		}
@@ -54,7 +58,7 @@ $(document).ready(function()
 		{
 			dw = false;
 		}
-		weaponSkill = $('#wskill').val();
+		weaponSkill = $('#wskill').text();
 		skillDiff = targetDefense - weaponSkill;
 		miss = getMiss() - hitChance;
 		miss = round(miss);
@@ -166,6 +170,46 @@ $(document).ready(function()
 		returnValue = (glanceRedMin + glanceRedMax) / 2;
 
 		return returnValue;
+	}
+
+	function initStatControl()
+	{
+		var stats = $('.stat_btn');
+		stats.on('click', function()
+		{
+			var btn = $(this);
+			var stat_num = btn.parent().prev().text();
+			if(btn.hasClass('stat_inc'))
+			{
+				var stat_num = parseInt(btn.parent().prev().text());
+				btn.parent().prev().text(stat_num + 1);
+			}
+			if(btn.hasClass('stat_dec'))
+			{
+				var stat_num = parseInt(btn.parent().prev().text());
+				if(stat_num > 0)
+				{
+					btn.parent().prev().text(stat_num - 1);
+				}
+			}
+		});
+	}
+
+	function initCheckboxes()
+	{
+		var boxes = $('.opt_checkbox');
+		boxes.on('click', function()
+		{
+			var box = $(this);
+			if(box.hasClass('checked'))
+			{
+				box.removeClass('checked');
+			}
+			else
+			{
+				box.addClass('checked');
+			}
+		});
 	}
 
 });
