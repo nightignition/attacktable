@@ -297,7 +297,7 @@ section
 .content_container
 {
 	width: 100%;
-	padding-top: 34px;
+	padding-top: 71px;
 	min-height: 100vh;
 	padding-bottom: 150px;
 }
@@ -327,7 +327,7 @@ section
 }
 .master_title
 {
-	margin-bottom: 26px;
+	margin-bottom: 14px;
 }
 .master_title h1
 {
@@ -352,7 +352,7 @@ section
 .title
 {
 	width: 100%;
-	height: 97px;
+	height: 85px;
 	background: transparent;
 	font-family: 'dwm', sans-serif;
 	font-size: 36px;

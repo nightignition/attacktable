@@ -20,13 +20,16 @@ $(document).ready(function()
 	*/
 
 	var 
+	level = 60,
 	targetLevel = 63,
 	targetDefense = 0,
 	skillDiff = 0,
 	hitChance,
 	crit = 0,
 	weaponSkill = 0,
+	extraWeaponSkill = 0,
 	dw,
+	attackFromBehind,
 	defense = 315,
 	miss = 0,
 	dodge = 5,
@@ -49,6 +52,9 @@ $(document).ready(function()
 		resetDefaults();
 		targetDefense = targetLevel * 5; //315 for level 63 mobs
 		hitChance = $('#input_hit').text();
+		weaponSkill = $('#wskill').text();
+		skillDiff = targetDefense - weaponSkill;
+		extraWeaponSkill = Math.max(0, (weaponSkill - (level * 5)));
 		crit = parseInt($('#input_crit').text());
 		if($('.check_2').hasClass("checked"))
 		{
@@ -58,34 +64,56 @@ $(document).ready(function()
 		{
 			dw = false;
 		}
-		weaponSkill = $('#wskill').text();
-		skillDiff = targetDefense - weaponSkill;
+
+		// Check if attacking from behind
+		if($('.check_1').hasClass('checked'))
+		{
+			attackFromBehind = true;
+			parry = 0;
+			block = 0;
+		}
+		else
+		{
+			attackFromBehind = false;
+			if(extraWeaponSkill > 0)
+			{
+				parry = 14 - (extraWeaponSkill * 0.1);
+			}
+		}
 		miss = getMiss() - hitChance;
-		miss = round(miss);
+		miss = parseFloat(round(miss));
 		var dodgeFinal = dodge + (skillDiff * 0.1);
-		block = block + ((targetLevel - 60) * 0.5);
 		glanceRed = 100 - (getGlanceRed() * 100);
-		total = total - miss - dodgeFinal - glance;
+		total = total - miss - dodgeFinal - glance - parry - block;
 		var critFinal = parseFloat(getCritFinal());
-		var hitFinal = round(total - critFinal);
 		var critOverCap = 0;
 		total = round(total);
-		if(hitFinal < 0)
-		{
-			hitFinal = 0;
-		}
+
+		// See if crit is overcapped
 		if(parseFloat(critFinal) > parseFloat(total))
 		{
 			critOverCap = round(critFinal - total);
-			critFinal = total + '(' + critOverCap + '% crit is over the cap)';
+			critFinal = total;
+		}
+
+		critFinal = Math.min((100 - miss - dodgeFinal - parry - block - glance), critFinal);
+		var hitFinal = round(Math.max((100 - miss - dodgeFinal - parry - block - glance - critFinal), 0));
+
+		if(critOverCap > 0)
+		{
+			critFinal = critFinal + '(' + critOverCap + '% crit is over the cap)';
+			hitFinal = 0;
 		}
 		
-		// $('.crit_cap').text(hitFinal);
+		parry = parry + "%";
+		block = block + "%";
 		var result = 
 			'<div>Miss: '+ miss +'</div>'+
 			'<div>Dodge: '+ dodgeFinal +'</div>'+
+			'<div>Parry: '+ parry +'</div>'+
 			'<div>Glancing Chance: '+ glance +'</div>'+
 			'<div>Glancing Reduction: '+ glanceRed +'%</div>'+
+			'<div>Block: '+ block +'</div>'+
 			'<div>Crit: '+ critFinal +'</div>'+
 			'<div>Crit cap (white): '+ total +'</div>'+
 			'<div>Hit: '+ hitFinal +'%</div>';
@@ -110,13 +138,14 @@ $(document).ready(function()
 		skillDiff = 0;
 		miss = 0;
 		block = 5;
+		parry = 14;
 		glanceRed = 0;
 		total = 100;
 	}
 
 	function getCritFinal()
 	{
-		var critTemp = (crit + ((300 - (targetLevel * 5)) * 0.2)) - 1.8;
+		var critTemp = (crit + ((level * 5 - (targetLevel * 5)) * 0.2)) - 1.8;
 
 		// A flat 1.8% reduction to your crit chance gained from auras. Auras in this context are talents
 		// such as Cruelty or Axe Specialization, gear that directly gives crit % through Equip: effects,
