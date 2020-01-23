@@ -82,6 +82,10 @@ $(document).ready(function()
 		}
 		miss = getMiss() - hitChance;
 		miss = parseFloat(round(miss));
+		if(miss < 0)
+		{
+			miss = 0;
+		}
 		var dodgeFinal = dodge + (skillDiff * 0.1);
 		glanceRed = 100 - (getGlanceRed() * 100);
 		total = total - miss - dodgeFinal - glance - parry - block;
